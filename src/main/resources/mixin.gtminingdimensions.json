@@ -1,0 +1,10 @@
+{
+    "required": true,
+    "package": "com.zizzy.gtminingdimension.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixinPriority": 1000,
+    "mixins": [
+      "MaterialRegistryManagerMixin"
+    ]
+  }
+  
