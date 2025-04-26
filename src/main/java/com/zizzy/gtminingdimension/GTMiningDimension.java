@@ -32,15 +32,14 @@ public class GTMiningDimension
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
-        NeoForge.EVENT_BUS.register(this);
-
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        // Register the mod’s event handlers properly
+        NeoForge.EVENT_BUS.register(GTCEuServerEvents.class);
+        //modEventBus.register(this);
+
+        // Register config handling
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -53,15 +52,19 @@ public class GTMiningDimension
     {
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
+    public class GTCEuServerEvents {
+        @SubscribeEvent
+        public static void onServerStarting(ServerStartingEvent event) {
+            System.out.println("Server is starting!");
+        }
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
-    {
+    {    @SubscribeEvent
+        public static void onClientSetup(FMLCommonSetupEvent event) {
+            System.out.println("Client setup initialized!");
+        }
     }
 }
